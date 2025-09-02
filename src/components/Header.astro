@@ -1,0 +1,95 @@
+---
+import ThemeIcon from './ThemeIcon.astro';
+---
+
+<style>
+  nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #333;
+    padding: 1rem;
+  }
+
+  .logo {
+    color: #fff;
+    font-size: 2rem;
+    font-weight: bold;
+  }
+
+  ul {
+    display: flex;
+    list-style: none;
+    gap: 1rem;
+  }
+
+  li a {
+    color: #fff;
+    text-decoration: none;
+  }
+
+  .hamburger {
+    display: none;
+    flex-direction: column;
+    cursor: pointer;
+  }
+
+  .hamburger span {
+    height: 3px;
+    width: 25px;
+    background: #fff;
+    margin: 4px 0;
+  }
+
+  @media (max-width: 768px) {
+    ul {
+      display: none;
+      flex-direction: column;
+      background: #333;
+      position: absolute;
+      top: 60px;
+      right: 10px;
+      padding: 1rem;
+    }
+
+    ul.show {
+      display: flex;
+    }
+
+    .hamburger {
+      display: flex;
+    }
+  }
+</style>
+
+<nav>
+  <div class="logo">MySite</div>
+
+  <div class="hamburger" id="hamburger">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+
+  <ul id="nav-links">
+    <li><a href="/">Home</a></li>
+    <li><a href="/about">About</a></li>
+    <li><a href="/blog">Blog</a></li>
+    <li><a href="/tags">Tags</a></li>
+  </ul>
+
+  <ThemeIcon />
+</nav>
+
+<script is:inline>
+  document.addEventListener("DOMContentLoaded", () => {
+    const hamburger = document.getElementById("hamburger");
+    const navLinks = document.getElementById("nav-links");
+
+    if (hamburger && navLinks) {
+      hamburger.addEventListener("click", () => {
+        navLinks.classList.toggle("show");
+      });
+    }
+  });
+</script>

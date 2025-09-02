@@ -1,0 +1,30 @@
+---
+type Platform = 'linkedIn' | 'github' | 'youtube';
+
+const { platform, username } = Astro.props as {
+  platform: Platform;
+  username: string;
+
+  
+};
+
+const links: Record<Platform, string> = {
+  linkedIn: `https://www.linkedin.com/in/triptii216`,
+  github: `https://github.com/Triptii03`,
+  youtube:`https://youtube.com/${username}`,
+};
+
+const href = links[platform];
+---
+
+<a href={href} target="_blank" rel="noopener noreferrer">{platform}</a>
+
+<style>
+  a {
+    margin: 0 0.5rem;
+    text-decoration: none;
+    color: #05253c;
+    font-weight: bold;
+  }
+  a:hover { text-decoration: underline; }
+</style>

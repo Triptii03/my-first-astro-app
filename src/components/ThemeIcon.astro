@@ -1,0 +1,66 @@
+---
+---
+
+<button id="themeToggle" aria-label="Toggle theme" class="theme-toggle">
+  <svg class="theme-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+    <path class="sun" fill-rule="evenodd" d="M12 17.5a5.5 5.5 0 1 0 0-11 5.5 5.5 0 0 0 0 11z"/>
+    <path class="moon" fill-rule="evenodd" d="M16.5 6A10.5 10.5 0 0 1 4 16.5c0 5.8 4.7 10.5 10.5 10.5s10.5-4.7 10.5-10.5S22.3 6 16.5 6z"/>
+  </svg>
+  <span class="theme-label">Light</span>
+</button>
+
+<style>
+  .theme-toggle {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    border: 0;
+    background: none;
+    cursor: pointer;
+    color: #f2e3e3;
+    font-size: 1rem;
+  }
+
+  .theme-icon {
+    width: 36px; 
+    height: 36px;
+  }
+
+  .sun { fill: rgb(217, 235, 151); }
+  .moon { fill: transparent; }
+
+  :global(.dark) .sun { fill: transparent; }
+  :global(.dark) .moon { fill: white; }
+
+  :global(.dark) .theme-label {
+    color: #fff;
+  }
+</style>
+
+<script is:inline>
+  const getTheme = () => {
+    const saved = localStorage.getItem("theme");
+    if (saved === "dark" || saved === "light") return saved;
+    return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+  };
+
+  const applyTheme = (theme) => {
+    const label = document.querySelector(".theme-label");
+    if (theme === "dark") {
+      document.documentElement.classList.add("dark");
+      if (label) label.textContent = "Dark Mode";
+    } else {
+      document.documentElement.classList.remove("dark");
+      if (label) label.textContent = "Light Mode";
+    }
+  };
+
+  let theme = getTheme();
+  applyTheme(theme);
+
+  document.getElementById("themeToggle")?.addEventListener("click", () => {
+    theme = theme === "dark" ? "light" : "dark";
+    localStorage.setItem("theme", theme);
+    applyTheme(theme);
+  });
+</script>

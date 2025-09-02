@@ -1,0 +1,25 @@
+---
+import Social from "./Social.astro";
+---
+
+<footer>
+  <p>Find me on:</p>
+  <Social platform="linkedIn" username="https://www.linkedin.com/in/triptii216" />
+  <Social platform="github"  username="https://github.com/Triptii03" />
+  <Social platform="youtube" username="your_user" />
+</footer>
+
+<style>
+  footer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1rem;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    background: #aab3b4;
+    border-top: 1px solid #183037;
+    margin-top: 2rem;
+  }
+  footer p { margin: 0; }
+</style>

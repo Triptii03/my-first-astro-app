@@ -1,0 +1,93 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import BlogPost from '../../components/BlogPost.astro';
+
+export async function getStaticPaths() {
+  const allPosts = Object.values(
+    import.meta.glob('../posts/*.md', { eager: true })
+  ) as any[];
+
+  const uniqueTags = [
+    ...new Set(allPosts.flatMap((p: any) => p.frontmatter?.tags ?? [])),
+  ];
+
+  return uniqueTags.map((tag: string) => {
+    const filteredPosts = allPosts.filter(
+      (p: any) =>
+        Array.isArray(p.frontmatter?.tags) &&
+        p.frontmatter.tags.includes(tag)
+    );
+    return {
+      params: { tag },
+      props: { posts: filteredPosts },
+    };
+  });
+}
+
+const { tag } = Astro.params;
+const { posts } = Astro.props as { posts: any[] };
+---
+
+<BaseLayout pageTitle={tag}>
+  <h2>Posts tagged with <span class="tag-highlight">{tag}</span></h2>
+
+  <div class="posts-grid">
+    {posts.map((post: any) => (
+      <a href={post.url} class="post-card">
+        <h3>{post.frontmatter?.title ?? 'Untitled'}</h3>
+        <p>{post.frontmatter?.description ?? 'No description available.'}</p>
+      </a>
+    ))}
+  </div>
+</BaseLayout>
+
+<style>
+  h2 {
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+    font-weight: 600;
+  }
+
+  .tag-highlight {
+    background: #d1d8df;
+    color: #0366d6;
+    padding: 0.2rem 0.5rem;
+    border-radius: 6px;
+  }
+
+  .posts-grid {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  }
+
+  .post-card {
+    display: block;
+    padding: 1rem;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    background: #d4e7eb;
+    text-decoration: none;
+    color: inherit;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+
+  .post-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    border-color: #0366d6;
+  }
+
+  .post-card h3 {
+    margin: 0 0 0.5rem 0;
+    font-size: 1.2rem;
+    color: #0366d6;
+  }
+
+  .post-card p {
+    margin: 0;
+    font-size: 0.95rem;
+    color: #444;
+  }
+</style>

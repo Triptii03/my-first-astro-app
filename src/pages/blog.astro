@@ -1,13 +1,97 @@
-<html>
-     <head>
-        <title>About Me</title>
-    </head>
-<body>
-  <a href="/">Home</a>
-  <a href="/about">About</a>
-  <a href="/blog">Blog</a>
+---
+import Layout from "../layouts/Layout.astro";
 
-  <h1>My Astro Learning Blog</h1>
-  <p>This is where I will post about my journey learning Astro 🚀</p>
-</body>
-</html>
+const modules = import.meta.glob('./posts/*.md', { eager: true });
+const posts = Object.values(modules)
+  .sort((a: any, b: any) => {
+    const da = new Date(a.frontmatter?.date ?? 0).getTime();
+    const db = new Date(b.frontmatter?.date ?? 0).getTime();
+    return db - da;
+  });
+---
+
+<Layout title="My Blog">
+  <h1>My Blog</h1>
+  <p class="intro">
+    Welcome to my blog! Here I share what I’m learning about Astro, web
+    development, and more.
+  </p>
+
+  <section class="posts-grid">
+    {posts.map((post: any) => (
+      <article class="post-card">
+        <h2 class="post-title">
+          <a href={post.url}>{post.frontmatter?.title ?? "Untitled Post"}</a>
+        </h2>
+
+        {post.frontmatter?.description && (
+          <p class="post-desc">{post.frontmatter.description}</p>
+        )}
+
+        {post.frontmatter?.date && (
+          <time class="post-date" datetime={post.frontmatter.date}>
+            {new Date(post.frontmatter.date).toLocaleDateString()}
+          </time>
+        )}
+
+        {Array.isArray(post.frontmatter?.tags) && post.frontmatter.tags.length > 0 ? (
+          <ul class="card-tags">
+            {post.frontmatter.tags.map((t: any) => (
+              <li><a href={`/tags/${t}`}>#{t}</a></li>
+            ))}
+          </ul>
+        ) : null}
+      </article>
+    ))}
+  </section>
+</Layout>
+
+<style>
+  h1 { text-align: center; margin: 0 0 .5rem; }
+  .intro { text-align: center; margin: 0 0 2rem; color: #444; }
+
+  .posts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.25rem;
+  }
+
+  .post-card {
+    background: #fff;
+    padding: 1.2rem 1.3rem;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,.08);
+    transition: transform .2s ease, box-shadow .2s ease;
+  }
+  .post-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 6px 16px rgba(0,0,0,.12);
+  }
+
+  .post-title { margin: 0 0 .4rem; font-size: 1.25rem; }
+  .post-title a { text-decoration: none; color: #222; }
+  .post-title a:hover { color: #1d72b8; }
+
+  .post-desc { margin: 0 0 .75rem; color: #555; font-size: .95rem; }
+  .post-date { display: block; color: #777; font-size: .85rem; }
+
+  .card-tags {
+    list-style: none;
+    padding: 0;
+    margin: .6rem 0 0;
+    display: flex; flex-wrap: wrap; gap: .4rem;
+  }
+  .card-tags li a {
+    font-size: .8rem;
+    text-decoration: none;
+    padding: .25rem .55rem;
+    border-radius: 999px;
+    border: 1px solid #e0e6ed;
+    background: #f8f9fa;
+    color: #333;
+    transition: all .2s ease;
+  }
+  .card-tags li a:hover {
+    background: #1d72b8; color: #fff; border-color: #1d72b8;
+  }
+</style>

@@ -1,12 +1,14 @@
-<html>
-  <head>
-    <title>My First Astro App</title>
-  </head>
-  <body>
-    <a href="/">Home</a>
-    <a href="/about">About</a>
-    <a href="/blog">Blog</a>
-    <h1>My Astro Site</h1>
-    <p>This is my Home Page</p>
-  </body>
-</html>
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Greeting from "../components/Greeting.jsx";
+
+const pageTitle = "Home Page";
+---
+
+<BaseLayout pageTitle={pageTitle}>
+  <h1>Welcome to My Astro App 🚀</h1>
+  <p>This is the homepage of my first Astro app.</p>
+
+  <h2>Here’s an interactive greeting island 🌴</h2>
+  <Greeting client:load messages={["Hi", "Hello", "Howdy", "Hey there"]} />
+</BaseLayout>

@@ -1,29 +1,23 @@
 ---
-const operatingSystem = "Windows";
-const quantity = 3;
-const footwear = "boots";
-const student = true;
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const pageTitle = "About Me";
+const happy = true;
+const finished = true;
+const goal = 3;
+const identity = {
+  firstName: "Sarah",
+  country: "Canada",
+  occupation: "Technical Writer",
+  hobbies: ["photography", "birdwatching", "baseball"],
+};
+const skills = ["HTML", "CSS", "JavaScript", "React", "Astro", "Writing Docs"];
+const skillColor = "navy";
+const fontWeight = "bold";
+const textCase = "uppercase";
 ---
 
-<html>
-  <head>
-    <title>About Me</title>
-  </head>
-  <body>
-    <a href="/">Home</a>
-    <a href="/about">About</a>
-    <a href="/blog">Blog</a>
-
-    <h1>About Me</h1>
-    <h2>This is my new Astro site!</h2>
-    <p>I am working through Astro's introductory tutorial. This is the second page on my website.</p>
-
-    <h3>Dynamic Values:</h3>
-    <ul>
-      <li>Operating System: {operatingSystem}</li>
-      <li>Quantity: {quantity}</li>
-      <li>Footwear: {footwear}</li>
-      <li>Student: {student ? "Yes" : "No"}</li>
-    </ul>
-  </body>
-</html>
+<BaseLayout>
+  <h1>About Page</h1>
+  <p>I am learning astro and building my first project with multiple pages.</p>
+</BaseLayout

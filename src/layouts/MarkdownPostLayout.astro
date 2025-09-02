@@ -1,0 +1,37 @@
+---
+const { title, description, date, tags } = Astro.props;
+
+const tagList: string[] =
+  Array.isArray(tags) ? tags :
+  (typeof tags === 'string' ? [tags] : []);
+---
+
+<article class="post">
+  <header>
+    <h1>{title}</h1>
+    <p class="meta">
+      {date && <time datetime={date}>{new Date(date).toLocaleDateString()}</time>}
+    </p>
+    {description && <p class="desc">{description}</p>}
+  </header>
+
+  <slot />
+
+  {tagList.length > 0 && (
+    <ul class="tag-list">
+      {tagList.map(t => (
+        <li class="tag"><a href={`/tags/${t}`}>#{t}</a></li>
+      ))}
+    </ul>
+  )}
+</article>
+
+<style>
+  .post{max-width:760px;margin:2rem auto;padding:1.5rem;background:#fff;border-radius:12px;box-shadow:0 4px 12px rgba(0,0,0,.1)}
+  h1{margin:0 0 .25rem;color:#222}
+  .meta{color:#666;font-size:.9rem;margin:0 0 1rem}
+  .desc{margin:0 0 1.25rem;color:#444;font-style:italic}
+  .tag-list{list-style:none;padding:0;margin:1.25rem 0 0;display:flex;flex-wrap:wrap;gap:.45rem}
+  .tag a{display:inline-block;padding:.35rem .65rem;border-radius:999px;background:#eef2f7;border:1px solid #dde3ea;color:#1d2a3a;font-size:.85rem;text-decoration:none}
+  .tag a:hover{background:#1d72b8;color:#fff;border-color:#1d72b8}
+</style>
